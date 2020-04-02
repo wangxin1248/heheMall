@@ -1,0 +1,46 @@
+{% extends 'base_user.html' %}
+{% block user_info %}
+    {#  左边导航栏  #}
+    <div class="left_menu_con clearfix">
+        <h3>用户中心</h3>
+        <ul>
+            <li><a href="/user/info/">· 个人信息</a></li>
+            <li><a href="/user/order/">· 全部订单</a></li>
+            <li><a href="/user/site/" class="active">· 收货地址</a></li>
+        </ul>
+    </div>
+    {#  右边具体信息显示  #}
+    <div class="right_content clearfix">
+				<h3 class="common_title2">收货地址</h3>
+				<div class="site_con">
+					<dl>
+						<dt>当前地址：</dt>
+						<dd>{{ user_addr }}</dd>
+					</dl>
+				</div>
+				<h3 class="common_title2">编辑地址</h3>
+				<div class="site_con">
+					<form action="/user/save_user_info/" method="post">
+                        {% csrf_token %}
+						<div class="form_group">
+							<label>收件人：</label>
+							<input type="text" name="u_name" value={{ name }}>
+						</div>
+						<div class="form_group form_group2">
+							<label>详细地址：</label>
+							<textarea class="site_area" name="u_addr">{{ addr }}</textarea>
+						</div>
+						<div class="form_group">
+							<label>邮编：</label>
+							<input type="text" name="u_code" value={{ code }}>
+						</div>
+						<div class="form_group">
+							<label>手机：</label>
+							<input type="text" name="u_phone" value={{ phone }}>
+						</div>
+
+						<input type="submit" value="提交" class="info_submit">
+					</form>
+				</div>
+		</div>
+{% endblock user_info %}
