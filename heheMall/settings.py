@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     # 自定义的应用
     'hh_main',
     'hh_user',
+    'hh_good',
+    # 富文本编辑器
+    'tinymce',
 ]
 
 MIDDLEWARE = [
@@ -111,9 +114,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# 修改站点语言
+LANGUAGE_CODE = 'zh-Hans'
 
-TIME_ZONE = 'UTC'
+# 修改站点时区
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -130,3 +135,13 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+# 开发阶段媒体路径
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
+# 部署阶段媒体路径
+# MEDIA_ROOT = '/var/www/heheMall/static'
+# 富文本编辑器配置
+# TINYMCE_DEFAULT_CONFIG = {
+#     'theme': 'advanced',
+#     'width': 600,
+#     'height': 400,
+# }
