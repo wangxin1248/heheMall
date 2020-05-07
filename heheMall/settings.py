@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # 自定义的应用
-    'hh_main',
     'hh_user',
     'hh_good',
     # 富文本编辑器

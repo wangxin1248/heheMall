@@ -1,0 +1,61 @@
+{% extends 'hh_good/base.html' %}
+{#  页面信息  #}
+{% block detail %}
+    <div class="r_wrap fr clearfix">
+            {#  列表排序依据  #}
+			<div class="sort_bar">
+				<a href="/list/{{ type_info.id }}/1/1/"
+                        {% if sort == "1" %}
+                            class="active"
+                        {% endif %}
+                >默认</a>
+				<a href="/list/{{ type_info.id }}/1/2/"
+                        {% if sort == "2" %}
+                            class="active"
+                        {% endif %}
+                >价格</a>
+				<a href="/list/{{ type_info.id }}/1/3/"
+                        {% if sort == "3" %}
+                            class="active"
+                        {% endif %}
+                >人气</a>
+			</div>
+
+			<ul class="goods_type_list clearfix">
+                {# 遍历所有商品 #}
+                {% for g in page %}
+                    <li>
+					<a href="/good/{{ g.id }}/"><img src="/static/{{ g.g_pic }}"></a>
+					<h4><a href="/good/{{ g.id }}/">{{ g.g_title }}</a></h4>
+					<div class="operate">
+						<span class="prize">{{ g.g_price }}</span>
+						<span class="unit">{{ g.g_price }}/{{ g.g_unit }}</span>
+                        {# 购物车功能 #}
+						<a href="#" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+                {% endfor %}
+			</ul>
+            {#  分页器  #}
+			<div class="pagenation">
+                {#  上一页  #}
+				{% if page.has_previous %}
+                    <a href="/list/{{ type_info.id }}/{{ page.previous_page_number }}/{{ sort }}">上一页</a>
+                {% endif %}
+
+                {#  页码  #}
+                {% for pindex in paginator.page_range %}
+                    {% if pindex == page.number %}
+                        <a href="#" class="active">{{ pindex }}</a>
+                    {% else %}
+                        <a href="/list/{{ type_info.id }}/{{ pindex }}/{{ sort }}">{{ pindex }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {#  下一页  #}
+                {% if page.has_next %}
+                    <a href="/list/{{ type_info.id }}/{{ page.next_page_number }}/{{ sort }}">下一页</a>
+                {% endif %}
+			</div>
+		</div>
+{% endblock detail %}

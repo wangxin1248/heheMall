@@ -18,12 +18,10 @@ from django.urls import path, re_path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # 主界面的url
-    re_path(r'^', include('hh_main.urls')),
-    # 用户相关界面的url
+    # 用户模块相关界面的url
     re_path(r'^user/', include('hh_user.urls')),
-    # 商品相关界面的url
-    # re_path(r'^good/', include('hh_good.urls')),
+    # 商品模块相关界面的url
+    re_path(r'^', include('hh_good.urls')),
     # 富文本编辑器
     re_path(r'^/static/tinymce/', include('tinymce.urls')),
 ]

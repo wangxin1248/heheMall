@@ -1,6 +1,8 @@
 {% extends 'base_foot.html' %}
 {% block head %}
-
+    <script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="/static/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/static/js/slide.js"></script>
 {% endblock head %}
 {% block body %}
     {# 用户顶部信息 #}
@@ -27,17 +29,18 @@
 			</div>
 		</div>
 	</div>
-    {# 用户和搜索商品 #}
+    {# 搜索商品和我的购物车 #}
 	<div class="search_bar clearfix">
 		<a href="/" class="logo fl"><img src="/static/images/logo.png" width="150" height="60"></a>
-		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
-		<div class="search_con fr">
+		<div class="search_con fl">
 			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
 			<input type="button" class="input_btn fr" name="" value="搜索">
 		</div>
+		<div class="guest_cart fr">
+			<a href="#" class="cart_name fl">我的购物车</a>
+			<div class="goods_count fl" id="show_count">1</div>
+		</div>
 	</div>
-    {#  用户信息的block  #}
-    <div class="main_con clearfix">
-		{% block user_info %}{% endblock user_info %}
-	</div>
+    {#  商品信息展示  #}
+    {% block good %}{% endblock good %}
 {% endblock body%}

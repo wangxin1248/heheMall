@@ -1,5 +1,8 @@
 from django.contrib import admin
 from hh_good.models import *
+"""
+商品模块模型后台管理类
+"""
 
 
 # Register your models here.

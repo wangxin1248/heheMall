@@ -1,5 +1,8 @@
 from django.db import models
 from tinymce.models import HTMLField
+"""
+商品模块模型类
+"""
 
 
 # 商品类别
@@ -21,6 +24,8 @@ class GoodInfo(models.Model):
     g_pic = models.ImageField(upload_to='hh_good')
     # 商品价格
     g_price = models.DecimalField(max_digits=5, decimal_places=2)
+    # 商品单位
+    g_unit = models.CharField(max_length=50, default='500g')
     # 商品简介
     g_intro = models.CharField(max_length=200)
     # 商品库存
