@@ -20,4 +20,6 @@ urlpatterns = [
     re_path(r'^register_exits/$', views.register_exits),
     # 用户中心修改用户的个人信息
     re_path(r'^save_user_info/$', views.save_user_info),
+    # 用户退出
+    re_path(r'^exit/$', views.exit),
 ]

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponseRedirect
 from .models import *
 from hashlib import sha1
+from . import user_decorator
 
 
 # 登陆界面请求
@@ -26,6 +27,7 @@ def register(request):
 
 
 # 请求用户信息页面
+@user_decorator.login
 def user_info(request):
     """
     请求用户信息页面
@@ -51,6 +53,7 @@ def user_info(request):
 
 
 # 用户订单信息页面
+@user_decorator.login
 def user_order(request):
     """
     用户订单信息页面
@@ -66,6 +69,7 @@ def user_order(request):
 
 
 # 用户中心信息界面
+@user_decorator.login
 def user_site(request):
     """
     用户中心信息界面
@@ -158,8 +162,9 @@ def login_handle(request):
     user = UserInfo.objects.filter(u_name=u_name)
     if len(user) > 0:
         if user[0].u_pwd == u_pwd1:
-            # 登陆成功，转到用户信息界面
-            red = HttpResponseRedirect('/user/info/')
+            # 登陆成功，转到登陆之前的页面
+            url = request.COOKIES.get('url', '/')
+            red = HttpResponseRedirect(url)
             # 记住用户名则设置用户名到cookie
             if check != 0:
                 red.set_cookie('u_name', u_name)
@@ -222,3 +227,16 @@ def save_user_info(request):
 
     # 重定向到登陆页面
     return redirect('/user/site/')
+
+
+# 用户退出
+def exit(request):
+    """
+    用户退出登陆
+    :param request:
+    :return:
+    """
+    # 将用户信息从sessopn中删除
+    request.session.flush()
+    # 退出成功，转到主页
+    return redirect('/')

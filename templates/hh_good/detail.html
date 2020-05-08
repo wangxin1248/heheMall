@@ -10,13 +10,24 @@
         }
         function minus() {
             num = parseFloat($('.num_show').val());
+            {# 不能减为0 #}
+            if(num <= 1){
+                return;
+            }
 		    $('.num_show').val(num-1);
 		    $('.num_show').blur();
         }
         $(function () {
             $('.num_show').blur(function () {
-                num = parseFloat($('.num_show').val());
-                price = parseFloat($('#gtotal').text());
+                {# 将用户输入的数据转为int，防止用户输入小数 #}
+                num = parseInt($('.num_show').val());
+                {# 用户输入的数据不能小于1 #}
+                if(num < 1){
+                    num = 1;
+                }
+                price = {{ good.g_price }};
+                {# 将用户输入的数据再赋值回去 #}
+                $('.num_show').val(num)
                 total = num*price;
                 $('#gtotal').text(total.toFixed(2)+'元');
             });
