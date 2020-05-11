@@ -3,7 +3,7 @@ from .models import *
 from django.core.paginator import Paginator,Page
 
 
-# Create your views here.
+# 网站首页
 def index(request):
     """
     项目首页
@@ -39,6 +39,7 @@ def index(request):
     return render(request, 'hh_good/index.html', context)
 
 
+# 商品列表页
 def list(request, tid, pindex, sort):
     """
     列表页显示
@@ -78,6 +79,7 @@ def list(request, tid, pindex, sort):
     return render(request, 'hh_good/list.html', content)
 
 
+# 商品详情页
 def detail(request, id):
     """
     商品详情页面所需数据
@@ -101,4 +103,30 @@ def detail(request, id):
         # 是否是详情页面
         'detail': True
     }
-    return render(request, 'hh_good/detail.html', context)
+    # 返回对象
+    response = render(request, 'hh_good/detail.html', context)
+
+    # 将当前商品记录到 cookie 中，首先读取 cookies 记录，默认为空字符串
+    good_id_list = request.COOKIES.get('good_id_list', '')
+    # 当前用户查看的商品id
+    good_id = '%d'%good.id
+    # 判断 cookies 中是否有数据
+    if good_id_list != '':
+        # 将已经访问的商品id切分为列表
+        good_id_list_copy = good_id_list.split(',')
+        # 假如该商品已经存在与cookies中则删除掉
+        if good_id_list_copy.count(good_id) >= 1:
+            good_id_list_copy.remove(good_id)
+        # 将该商品插入到列表的第一个位置上
+        good_id_list_copy.insert(0, good_id)
+        # 如果商品超过6个则删除一个
+        if len(good_id_list_copy) >= 6:
+            del good_id_list_copy[5]
+        # 将列表拼接为字符串
+        good_id_list = ','.join(good_id_list_copy)
+    else:
+        good_id_list = good_id
+    # 将 cookies 设置到response中
+    response.set_cookie('good_id_list', good_id_list)
+
+    return response

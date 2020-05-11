@@ -3,6 +3,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from .models import *
 from hashlib import sha1
 from . import user_decorator
+from hh_good.models import *
 
 
 # 登陆界面请求
@@ -26,11 +27,11 @@ def register(request):
     return render(request, 'hh_user/register.html', context)
 
 
-# 请求用户信息页面
+# 用户中心页面
 @user_decorator.login
 def user_info(request):
     """
-    请求用户信息页面
+    用户中心页面
     """
     # 判断是否保存了用户的 session 信息
     user_id = request.session.get('user_id')
@@ -47,12 +48,30 @@ def user_info(request):
     user_email = user.u_email
     if user_email == '':
         user_email = '无'
+
+    # 创建商品数组保存用户点击过的商品的信息
+    good_list = []
+    # 从 Cookies 中查询最近浏览信息
+    good_id_list = request.COOKIES.get('good_id_list', '')
+    if good_id_list != '':
+        good_id_list_copy = good_id_list.split(',')
+        # 依次从 Cookies 中查询商品信息来将其加入到商品数组中
+        for good_id in good_id_list_copy:
+            good_list.append(GoodInfo.objects.get(id=int(good_id)))
+
     # 构造界面显示信息
-    context = {'tittle': '用户信息', 'user_name': user_real_name, 'user_phone': user_phone, 'user_email': user_email}
+    context = {
+        'tittle': '用户信息',
+        'user_name': user_real_name,
+        'user_phone': user_phone,
+        'user_email': user_email,
+        'good_list': good_list
+    }
+
     return render(request, 'hh_user/user_center_info.html', context)
 
 
-# 用户订单信息页面
+# 用户中心订单信息页面
 @user_decorator.login
 def user_order(request):
     """
@@ -68,11 +87,11 @@ def user_order(request):
     return render(request, 'hh_user/user_center_order.html', context)
 
 
-# 用户中心信息界面
+# 用户中心收货地址信息界面
 @user_decorator.login
 def user_site(request):
     """
-    用户中心信息界面
+    用户中心收货地址信息界面
     """
     # 判断是否保存了用户的 session 信息
     user_id = request.session.get('user_id')
