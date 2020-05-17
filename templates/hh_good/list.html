@@ -31,7 +31,7 @@
 						<span class="prize">{{ g.g_price }}</span>
 						<span class="unit">{{ g.g_price }}/{{ g.g_unit }}</span>
                         {# 购物车功能 #}
-						<a href="#" class="add_goods" title="加入购物车"></a>
+						<a href="/cart/add/{{ g.id }}/1" class="add_goods" title="加入购物车"></a>
 					</div>
 				</li>
                 {% endfor %}

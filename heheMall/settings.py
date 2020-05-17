@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # 自定义的应用
     'hh_user',
     'hh_good',
+    'hh_cart',
     # 富文本编辑器
     'tinymce',
 ]
