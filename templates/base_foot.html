@@ -5,7 +5,11 @@
 	<title>{{ title }}</title>
 	<link rel="stylesheet" type="text/css" href="/static/css/reset.css">
 	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
-    {% block head %}{% endblock head %}
+    <script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery-ui.min.js"></script>
+    {% block head %}
+
+    {% endblock head %}
 </head>
 <body>
     {% block body %}{% endblock body%}

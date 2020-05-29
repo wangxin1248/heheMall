@@ -52,3 +52,41 @@ def add(request, good_id, good_count):
         return JsonResponse({'count':count})
     else:
         return redirect('/cart/')
+
+@user_decorator.login
+def edit(request, cart_id, count):
+    """
+    修改购物车信息
+    :param request:
+    :param cart_id:
+    :param count:
+    :return:
+    """
+    try:
+        cart = CartInfo.objects.get(pk=int(cart_id))
+        count1 = cart.count = int(count)
+        cart.save()
+        # 删除成功响应结果
+        data = {'ok':0}
+    except Exception as e:
+        # 删除失败响应结果
+        data = {'ok': count1}
+    return JsonResponse(data)
+
+@user_decorator.login
+def delete(request,cart_id):
+    """
+    删除购物车
+    :param request:
+    :param cart_id:
+    :return:
+    """
+    try:
+        cart = CartInfo.objects.get(pk=int(cart_id))
+        cart.delete()
+        # 删除成功响应结果
+        data = {'ok': 0}
+    except Exception as e:
+        # 删除失败响应结果
+        data = {'ok': 1}
+    return JsonResponse(data)
