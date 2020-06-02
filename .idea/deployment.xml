@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="wx@192.168.116.129:22" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" autoUpload="Always" serverName="192.168.116.129" autoUploadExternalChanges="true">
     <serverData>
       <paths name="192.168.116.129">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/wx/project/heheMall" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/home/wx/project/heheMall" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="wx@10.69.17.192:22">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/wx/project/heheMall" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="wx@10.69.17.192:22 password">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/wx/project/heheMall" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>

@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import *
 from hh_user import user_decorator
-from django.core.paginator import Paginator,Page
+from django.core.paginator import Paginator, Page
+
 
 # Create your views here.
 @user_decorator.login
@@ -16,8 +17,8 @@ def cart(request):
     carts = CartInfo.objects.filter(user_id=user_id)
     # 构造页面所需的数据
     context = {
-        'title':'购物车',
-        'carts':carts
+        'title': '购物车',
+        'carts': carts
     }
     return render(request, 'hh_cart/cart.html', context)
 

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'hh_user',
     'hh_good',
     'hh_cart',
+    'hh_order',
     # 富文本编辑器
     'tinymce',
 ]

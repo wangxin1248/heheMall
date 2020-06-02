@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import *
-from django.core.paginator import Paginator,Page
+from django.core.paginator import Paginator, Page
 
 
 # 网站首页

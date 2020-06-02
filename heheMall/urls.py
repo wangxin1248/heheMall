@@ -24,6 +24,8 @@ urlpatterns = [
     re_path(r'^', include('hh_good.urls')),
     # 购物车模块相关界面的url
     re_path(r'^cart/', include('hh_cart.urls')),
+    # 订单模块相关界面的url
+    re_path(r'^order/$', include('hh_order.urls')),
     # 富文本编辑器
     re_path(r'^/static/tinymce/', include('tinymce.urls')),
 ]
