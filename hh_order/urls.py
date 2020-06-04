@@ -8,4 +8,6 @@ from . import views
 urlpatterns = [
     # 首页
     re_path(r'^$', views.index),
+    # 订单处理
+    re_path(r'^handle/$', views.handle),
 ]

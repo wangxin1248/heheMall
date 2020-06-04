@@ -1,8 +1,12 @@
-from django.shortcuts import render
+import datetime
+from decimal import Decimal
+from django.shortcuts import render, redirect
 from django.db import transaction
 from hh_user import user_decorator
+from .models import OrderInfo, OrderDetailInfo
 from hh_user.models import UserInfo
 from hh_cart.models import CartInfo
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -40,12 +44,13 @@ def index(request):
     return render(request, 'hh_order/order.html', context)
 
 
+@csrf_exempt
+@transaction.atomic()
 @user_decorator.login
-def order(request, cart_id):
+def handle(request):
     """
     订单处理功能
-    :param request:
-    :param cart_id:
+    :param request:post需要的数据：cart_ids、total
     :return:
     订单创建流程：
     采用事务的方式执行：一旦操作失败则全部回退
@@ -55,4 +60,74 @@ def order(request, cart_id):
     4、修改商品库存
     5、删除购物车
     """
-    return render(request, 'hh_order/order.html')
+    # 创建事务状态保存点
+    tran_id = transaction.savepoint()
+    try:
+        # 创建订单对象
+        order = OrderInfo()
+        now_time = datetime.datetime.now()
+        # 查询当前用户的id
+        user_id = request.session.get('user_id')
+        # 对订单对象的属性进行赋值
+        order.order_id = '%s%d'%(now_time.strftime('%Y%m%d%H%M%S'), user_id)
+        order.user_id = user_id
+        order.order_date = now_time
+        order.order_total = Decimal(request.POST.get('total'))
+        # 保存订单对象
+        order.save()
+        # 查询所有的购物车信息
+        carts = CartInfo.objects.filter(user_id=user_id)
+        for cart in carts:
+            detail = OrderDetailInfo()
+            detail.order = order
+            # 查询购物车信息
+            cart = CartInfo.objects.get(id=cart.id)
+            # 判断商品库存
+            good = cart.good
+            # 假如商品库存大于购买数量
+            if good.g_stock >= cart.count:
+                # 减少商品库存
+                good.g_stock = cart.good.g_stock - cart.count
+                good.save()
+                # 完善订单详单信息
+                detail.goods_id = good.id
+                detail.price = good.g_price
+                detail.count = cart.count
+                # 保存订单详细信息对象
+                detail.save()
+                # 删除购物车对象
+                cart.delete()
+            else:
+                # 假如库存数量小于购买数量则直接回滚
+                transaction.savepoint_rollback(tran_id)
+                # 重定向到购物车界面
+                return redirect('/cart/')
+        # 完成操作提交事务
+        transaction.savepoint_commit(tran_id)
+    except Exception as e:
+        print(e)
+        transaction.savepoint_rollback(tran_id)
+    # 重定向到用户的订单界面
+    return redirect('/user/order/')
+
+
+@user_decorator.login
+def pay(request, order_id):
+    """
+    订单支付功能
+    :param request:
+    :param order_id:
+    :return:
+    """
+    # 查询订单对象
+    order = OrderInfo.objects.get(order_id=order_id)
+    # TODO 完成订单支付接口调用
+    # 修改订单支付状态
+    order.order_is_pay = True
+    # 保存订单信息
+    order.save()
+    context = {
+        'order': order,
+    }
+    # 转到指定页面
+    return render(request, 'hh_order/pay.html', context)

@@ -22,6 +22,7 @@ def cart(request):
     }
     return render(request, 'hh_cart/cart.html', context)
 
+
 @user_decorator.login
 def add(request, good_id, good_count):
     """
@@ -54,6 +55,7 @@ def add(request, good_id, good_count):
     else:
         return redirect('/cart/')
 
+
 @user_decorator.login
 def edit(request, cart_id, count):
     """
@@ -73,6 +75,7 @@ def edit(request, cart_id, count):
         # 删除失败响应结果
         data = {'ok': count1}
     return JsonResponse(data)
+
 
 @user_decorator.login
 def delete(request,cart_id):
